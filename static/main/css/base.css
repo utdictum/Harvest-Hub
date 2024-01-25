@@ -1,0 +1,137 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+html, body, p, div{
+    letter-spacing: -0.02px;
+    font-family: 'Nunito', sans-serif;
+}
+
+
+/* Bootstrap Over-ride */
+@media (min-width: 1000px){
+    .container{
+        max-width: 1000px;
+    }
+}
+@media (max-width: 1200px){
+    .container{
+        max-width: 100%;
+        padding:0 24px;
+    }
+}
+.dropdown-toggle::after {
+    display: none;
+}
+.dropdown-menu{
+    top:58px;
+    left:0px;
+    padding:10px;
+}
+
+.alert-primary{
+    background-color: #E4F1FF;
+}
+
+
+/* Navigation-Main*/
+
+.logo {
+    width: 50px;
+    height: auto;
+}
+
+@media (min-width: 768px) {
+    .logo {
+        width: 50px;
+        height: auto;
+    }
+}
+
+@media (min-width: 992px) {
+    .logo {
+        width: 75px;
+        height: auto;
+    }
+}
+
+@media (min-width: 1200px) {
+    .logo {
+        width: 80px;
+        height: auto;
+    }
+}
+
+
+/* Basket Menu */
+
+.basket-qty{
+    color: #fff;
+    background: #0e0e0e58;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 11px;
+    height: 15px;
+    width: 14px;
+    position: absolute;
+    box-sizing: content-box;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 1px;
+    right: 10px;
+}
+
+.basket-btn{
+    position: relative;
+}
+
+.basket-btn:hover, .basket-btn:focus, .basket-btn:active, .basket-btn.active{
+    color:#0e0e0e;
+    transition-duration: 0.4s;
+    background-color: #f9f3f3;
+}
+/* Custom Footer Styles */
+.footer-container {
+    background-color: #545929b9; /* Change this to your desired background color */
+    padding: 1rem 1.5rem; /* Adjust the padding as needed */
+}
+
+.footer-container .text-body-secondary {
+    color: #6c757d; /* Change this to your desired text color */
+}
+
+.footer-container a.text-body-secondary:hover {
+    color: #495057; /* Change this to your desired hover text color */
+    text-decoration: none;
+}
+
+.footer-container .nav {
+    list-style: none;
+}
+
+.footer-container .nav li {
+    display: inline-block;
+}
+
+.footer-container .nav li a i {
+    font-size: 1.25rem; /* Adjust the icon size as needed */
+}
+/* Additional CSS */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex-grow: 1;
+}
+
+html {
+    min-height: 100vh;
+}
+
+.bg-customcolor {
+    background-color: #ffffffab;
+}

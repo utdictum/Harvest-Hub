@@ -1,0 +1,149 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block stylesheet %}
+  {% static 'shop/css/shop.css' %}
+  <style>
+    .product-specifications, .product-description {
+      width: 450px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-specifications h4, .product-description h4 {
+      margin-bottom: 10px;
+      border-bottom: 2px solid #007bff;
+      padding-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .product-specifications ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .product-specifications li {
+      padding: 3px 0;
+      font-weight: 500;
+    }
+
+    .product-specifications li::before {
+      content: '• ';
+      color: #007bff;
+    }
+  </style>
+{% endblock %}
+{% block title %}
+{% if product %}{{ product.title }}{% else %}Product{% endif %}
+{% endblock %}
+{% block content %}
+
+<div class="container">
+  {% if messages %}
+  <div class="alert alert-warning" alert="{{ message.tags }}" role="alert">
+  {% for message in messages  %}
+    {{message|safe}} - <a href="{% url "account:wishlist" %}" class="alert-link">Your Shopping list</a>.
+  {% endfor %}
+  </div>
+  {% endif %}
+    <div class="row g-3">
+      <div class="col-md-5 ps-3 col-lg-5 order-md-last p-0 order-1">
+        <div class="d-grid gap-2">
+          <div class="d-flex d-flex-inline justify-content-between">
+            <div><span class="h3">{{ product.regular_price }} RON</span>
+            </div>
+            <div>
+              <label for="select">Qty</label>
+              <select id="select" class="h6 shop-select-dropdown">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+          </div>
+          <hr>
+          <button type="button" id="add-button" value="{{product.id}}" class="btn btn-success fw500">Add to
+            basket</button>
+          <a href="{% url "account:user_wishlist" product.id  %}" class="btn btn-light fw500" role="button" aria-disabled="true">Add to your shopping list</a>
+        </div>
+      </div>
+      <div class="col-md-7 col-lg-7 p-0">
+        <div class="card mb-3 border-0">
+          <div class="row g-0">
+            <div class="col-md-12">
+              <div class="card-body p-1">
+                <h1 class="mb-0 h2 pe-4 pb-4">{{ product.title }}</h1>
+                <div class="bg-light" style="display: inline-block;">
+                  {% for image in product.product_image.all %}
+                      {% if image.is_feature %}
+                          <img class="img-fluid" width="450px" alt="{{ image.image.alt_text }}"
+                               src="{{ image.image.url }}">
+                      {% else %}
+                          <img class="img-fluid pt-3" width="100px" alt="{{ image.image.alt_text }}"
+                               src="{{ image.image.url }}">
+                      {% endif %}
+                  {% endfor %}
+              </div>
+              <!-- Display product description -->
+              <div class="product-description mt-3">
+                <h4>Description:</h4>
+                <p>{{ product.description }}</p>
+              </div>
+              <!-- Display product specifications -->
+              <div class="product-specifications mt-3">
+                <h4>Specifications:</h4>
+                <ul>
+                  {% for specification_value in product.productspecificationvalue_set.all %}
+                    <li>{{ specification_value.specification.name }}: {{ specification_value.value }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  
+  <script>
+    $(document).ready(function () {
+      // Handle the click event for the 'add-button' element
+      $(document).on('click', '#add-button', function (event) {
+        event.preventDefault();
+  
+        // Get the product ID and quantity
+        const productID = $(this).val();
+        const productQty = $('#select option:selected').text();
+  
+        // AJAX request
+        $.ajax({
+          type: 'POST',
+          url: '{% url "basket:basket_add" %}',
+          data: {
+            productid: productID,
+            productqty: productQty,
+            csrfmiddlewaretoken: "{{csrf_token}}",
+            action: 'post'
+          },
+          success: function (response) {
+            // Update the basket quantity on a successful response
+            $("#basket-qty").html(response.qty);
+          },
+          error: function (xhr, errmsg, err) {
+            // Log the error for debugging purposes
+            console.error("Error:", errmsg, err);
+          }
+        });
+      });
+    });
+  </script>
+  
+  
+  {% endblock %}
